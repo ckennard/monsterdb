@@ -12,12 +12,12 @@ migrate = Migrate(app, db)
 class monstersModel(db.Model):
     __tablename__ = 'bestiary'
 
-    ID = db.Column(db.Integer(), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True) 
     Name = db.Column(db.String())
     CR = db.Column(db.Integer())
     XP = db.Column(db.Integer())
 
-    def __init__(self, NAME, CR, XP):
+    def __init__(self, Name, CR, XP):
         self.Name = Name
         self.CR = CR
         self.XP = XP
@@ -26,14 +26,14 @@ class monstersModel(db.Model):
         return f"<Monster {self.Name}>"
 
 @app.route('/monsters', methods=['GET'])
-def handle_monsterss():
+def handle_monsters():
     if request.method == 'GET':
         monsters = monstersModel.query.all()
         results = [
             {
-                "name": monsters.Name,
-                "cr": monsters.CR,
-                "xp": monsters.XP
+                "name": monster.Name,
+                "cr": monster.CR,
+                "xp": monster.XP
             } for monster in monsters]
 
         return {"count": len(results), "monsters": results}
