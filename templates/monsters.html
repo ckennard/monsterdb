@@ -1,0 +1,19 @@
+<head>
+</head>
+<body>
+	<form method="POST" action="/monsters">
+		{{ form.csrf_token }}
+		{{ form.sort.label }} {{ form.sort }}
+		<input type="submit" value="Sort">
+	</form>
+
+	<table>
+	{% for monster in monsters %}
+		<tr>
+			<td>{{monster.name}}</td>
+			<td>{{monster.cr}}</td>
+			<td>{{monster.xp}}</td>
+		</tr>
+	{% endfor %}
+	</table>
+</body>
