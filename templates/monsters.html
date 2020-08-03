@@ -1,6 +1,16 @@
 <head>
 </head>
 <body>
+
+	<form method="POST" action="/monsters">
+		<select name="CR">
+			{% for cr in uniqueCRs %}
+				<option value="{{ cr }}">{{ cr }}</option>
+			{% endfor %}
+		</select>
+		<input type="submit" value="CR Select">
+	</form>
+
 	<form method="POST" action="/monsters">
 		{{ form.csrf_token }}
 		{{ form.sort.label }} {{ form.sort }}
@@ -14,6 +24,11 @@
 			<td>{{monster.cr}}</td>
 			<td>{{monster.xp}}</td>
 		</tr>
+	{% endfor %}
+	{% for cr in uniqueCRs %}
+	<tr>
+		<td>{{cr.cr}}</td>
+	</tr>
 	{% endfor %}
 	</table>
 </body>
