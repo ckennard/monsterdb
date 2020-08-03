@@ -2,7 +2,7 @@
 # Previous imports remain...
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask import Flask,request
+from flask import Flask,request, render_template
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:ThanksP0stgres!@localhost:5432/bestiary"
@@ -36,7 +36,8 @@ def handle_monsters():
                 "xp": monster.XP
             } for monster in monsters]
 
-        return {"count": len(results), "monsters": results}
+        #return {"count": len(results), "monsters": results}
+        return render_template("monsters.html",monsters=results)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
