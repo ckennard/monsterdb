@@ -2,7 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, request, render_template
 from flask_wtf import FlaskForm
 from wtforms import SelectField
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired,Optional
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from sqlalchemy import distinct
 
@@ -27,32 +27,33 @@ class monstersModel(db.Model):
     def __repr__(self):
         return f"<{self.Name}>"
 
-class SortForm(FlaskForm):
+def _get_form(data=None):
+    form = FilterForm(data)
+    form.cr.choices = [(r.CR,r.CR) for r in monstersModel.query.distinct('CR').order_by("CR")]
+    return form
+    
+class FilterForm(FlaskForm):
     sort = SelectField('sort', 
         validators=[DataRequired()], 
         choices=[('Name', 'Name'),('CR', 'CR'), ('XP', 'XP')]
     )
-
-class CRForm(FlaskForm):
-    crSelect = QuerySelectField(monstersModel.query.distinct('CR'))
+    cr = SelectField('cr',
+        validators=[Optional()],
+        choices=[]
+    )
 
 @app.route('/monsters', methods=['GET','POST'])
 def handle_monsters():
+    monsters = monstersModel.query
     if request.method == 'GET':
-        monsters = monstersModel.query.all()
-        form = SortForm()
-
-        crSelect = CRForm()
-        monstersCR = monstersModel.query.distinct('CR')
-        uniqueCRs = [
-            monsterCR.CR
-         for monsterCR in monstersCR]
-
+        form = _get_form()
 
     else:
-        form = SortForm(request.form)
-        if form.validate(): 
-            monsters = monstersModel.query.order_by(form.sort.data)
+        form = _get_form(request.form)
+        if form.validate():
+            monsters = monsters.order_by(form.sort.data)
+            if form.cr.data:
+                monsters = monsters.filter_by(CR=form.cr.data)
             print ("successful form all good")
         else:
             print(form.errors)
@@ -64,7 +65,7 @@ def handle_monsters():
         "xp": monster.XP
     } for monster in monsters]
 
-    return render_template("monsters.html",monsters=results,form=form,uniqueCRs=uniqueCRs,crSelect=crSelect)
+    return render_template("monsters.html",monsters=results,form=form)
     
 
 if __name__ == '__main__':

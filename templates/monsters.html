@@ -2,19 +2,20 @@
 </head>
 <body>
 
-	<form method="POST" action="/monsters">
+	<!-- <form method="POST" action="/monsters">
 		<select name="CR">
 			{% for cr in uniqueCRs %}
 				<option value="{{ cr }}">{{ cr }}</option>
 			{% endfor %}
 		</select>
-		<input type="submit" value="CR Select">
-	</form>
+		<input type="submit" name = "formaction" value="CR Select">
+	</form> -->
 
 	<form method="POST" action="/monsters">
 		{{ form.csrf_token }}
 		{{ form.sort.label }} {{ form.sort }}
-		<input type="submit" value="Sort">
+		{{ form.cr.label }} {{ form.cr }}
+		<input type="submit" name = "formaction" value="Sort">
 	</form>
 
 	<table>
