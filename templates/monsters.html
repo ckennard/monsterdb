@@ -1,6 +1,16 @@
 <head>
+	<style>
+		tr:nth-child(even) {background: #CCC}
+		tr:nth-child(odd) {background: #FFF}
+	
+		.monsterType{
+			text-transform: capitalize;
+		}
+	</style>
 </head>
 <body>
+
+
 
 	<!-- <form method="POST" action="/monsters">
 		<select name="CR">
@@ -19,14 +29,20 @@
 		<input type="submit" name = "formaction" value="Sort">
 	</form>
 
-	<table>
-	{% for monster in monsters %}
+	<table width="50%" cellpadding="3" cellspacing="3">
 		<tr>
-			<td>{{monster.name}}</td>
-			<td>{{monster.cr}}</td>
-			<td>{{monster.Type}}</td>
-			<td><a href='https://aonprd.com/MonsterDisplay.aspx?ItemName={{monster.name}}'>Link</a></td>
+			<th><h3>Monster</h3></th>
+			<th><h3>CR</h3></th>
+			<th><h3>Type</h3></th>
+			<th><h3>Archive Link</h3></th>
 		</tr>
-	{% endfor %}
-	</table>
+		{% for monster in monsters %}
+			<tr>
+				<td>{{monster.name}}</td>
+				<td>{{monster.cr}}</td>
+				<div class="monsterType"><td>{{monster.Type}}</td></div>
+				<td><a href='https://aonprd.com/MonsterDisplay.aspx?ItemName={{monster.name}}'>Link</a></td>
+			</tr>
+		{% endfor %}
+		</table>
 </body>
