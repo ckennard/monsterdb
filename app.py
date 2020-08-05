@@ -17,12 +17,12 @@ class monstersModel(db.Model):
     id = db.Column(db.Integer, primary_key=True) 
     Name = db.Column(db.String())
     CR = db.Column(db.Integer())
-    XP = db.Column(db.Integer())
+    Type = db.Column(db.String())
 
-    def __init__(self, Name, CR, XP):
+    def __init__(self, Name, CR, Type):
         self.Name = Name
         self.CR = CR
-        self.XP = XP
+        self.Type = Type
 
     def __repr__(self):
         return f"<{self.Name}>"
@@ -30,14 +30,20 @@ class monstersModel(db.Model):
 def _get_form(data=None):
     form = FilterForm(data)
     form.cr.choices = [(r.CR,r.CR) for r in monstersModel.query.distinct('CR').order_by("CR")]
+    form.Type.choices = [(r.Type,r.Type) for r in monstersModel.query.distinct('Type').order_by("Type")]
     return form
     
 class FilterForm(FlaskForm):
+    print("filterform")
     sort = SelectField('sort', 
         validators=[DataRequired()], 
-        choices=[('Name', 'Name'),('CR', 'CR'), ('XP', 'XP')]
+        choices=[('Name', 'Name'),('CR', 'CR'), ('Type', 'Type')]
     )
     cr = SelectField('cr',
+        validators=[Optional()],
+        choices=[]
+    )
+    Type = SelectField('Type',
         validators=[Optional()],
         choices=[]
     )
@@ -54,15 +60,19 @@ def handle_monsters():
             monsters = monsters.order_by(form.sort.data)
             if form.cr.data:
                 monsters = monsters.filter_by(CR=form.cr.data)
+            if form.Type.data:
+                print("form.Type")
+                monsters = monsters.filter_by(Type=form.Type.data)
             print ("successful form all good")
         else:
             print(form.errors)
             print("bullshit form i hate it")
 
+    print("results")
     results = [{
         "name": monster.Name,
         "cr": monster.CR,
-        "xp": monster.XP
+        "Type": monster.Type
     } for monster in monsters]
 
     return render_template("monsters.html",monsters=results,form=form)

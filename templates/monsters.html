@@ -15,6 +15,7 @@
 		{{ form.csrf_token }}
 		{{ form.sort.label }} {{ form.sort }}
 		{{ form.cr.label }} {{ form.cr }}
+		{{ form.Type.label }} {{ form.Type }}
 		<input type="submit" name = "formaction" value="Sort">
 	</form>
 
@@ -23,13 +24,8 @@
 		<tr>
 			<td>{{monster.name}}</td>
 			<td>{{monster.cr}}</td>
-			<td>{{monster.xp}}</td>
+			<td>{{monster.Type}}</td>
 		</tr>
-	{% endfor %}
-	{% for cr in uniqueCRs %}
-	<tr>
-		<td>{{cr.cr}}</td>
-	</tr>
 	{% endfor %}
 	</table>
 </body>
