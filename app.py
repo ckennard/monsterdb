@@ -1,7 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, request, render_template
 from flask_wtf import FlaskForm
-from wtforms import SelectField
+from wtforms import SelectField, SelectMultipleField
 from wtforms.validators import DataRequired,Optional
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from sqlalchemy import distinct
@@ -39,7 +39,7 @@ class FilterForm(FlaskForm):
         validators=[DataRequired()], 
         choices=[('Name', 'Name'),('CR', 'CR'), ('Type', 'Type')]
     )
-    cr = SelectField('cr',
+    cr = SelectMultipleField('cr',
         validators=[Optional()],
         choices=[]
     )
@@ -59,7 +59,8 @@ def handle_monsters():
         if form.validate():
             monsters = monsters.order_by(form.sort.data)
             if form.cr.data:
-                monsters = monsters.filter_by(CR=form.cr.data)
+                print (form.cr.data)
+                monsters = monsters.filter(monstersModel.CR.in_(form.cr.data))
             if form.Type.data:
                 print("form.Type")
                 monsters = monsters.filter_by(Type=form.Type.data)

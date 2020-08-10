@@ -7,20 +7,9 @@
 			text-transform: capitalize;
 		}
 	</style>
+	<script type="text/javascript" src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
 </head>
 <body>
-
-
-
-	<!-- <form method="POST" action="/monsters">
-		<select name="CR">
-			{% for cr in uniqueCRs %}
-				<option value="{{ cr }}">{{ cr }}</option>
-			{% endfor %}
-		</select>
-		<input type="submit" name = "formaction" value="CR Select">
-	</form> -->
-
 	<form method="POST" action="/monsters">
 		{{ form.csrf_token }}
 		{{ form.sort.label }} {{ form.sort }}
@@ -29,7 +18,7 @@
 		<input type="submit" name = "formaction" value="Sort">
 	</form>
 
-	<table width="50%" cellpadding="3" cellspacing="3">
+	<table class="sortable" width="50%" cellpadding="3" cellspacing="3">
 		<tr>
 			<th><h3>Monster</h3></th>
 			<th><h3>CR</h3></th>
