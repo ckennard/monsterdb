@@ -15,6 +15,7 @@
 		{{ form.sort.label }} {{ form.sort }}
 		{{ form.cr.label }} {{ form.cr }}
 		{{ form.Type.label }} {{ form.Type }}
+		{{ form.Source.label}} {{ form.Source }}
 		<input type="submit" name = "formaction" value="Sort">
 	</form>
 
@@ -23,6 +24,7 @@
 			<th><h3>Monster</h3></th>
 			<th><h3>CR</h3></th>
 			<th><h3>Type</h3></th>
+			<th><h3>Source</h3></th>
 			<th><h3>Archive Link</h3></th>
 		</tr>
 		{% for monster in monsters %}
@@ -30,6 +32,7 @@
 				<td>{{monster.name}}</td>
 				<td>{{monster.cr}}</td>
 				<td class="monsterType">{{monster.Type}}</td>
+				<td>{{monster.Source}}</td>
 				<td><a href='https://aonprd.com/MonsterDisplay.aspx?ItemName={{monster.name}}'>Link</a></td>
 			</tr>
 		{% endfor %}

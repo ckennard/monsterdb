@@ -18,11 +18,13 @@ class monstersModel(db.Model):
     Name = db.Column(db.String())
     CR = db.Column(db.Integer())
     Type = db.Column(db.String())
+    Source = db.Column(db.String())
 
-    def __init__(self, Name, CR, Type):
+    def __init__(self, Name, CR, Type, Source):
         self.Name = Name
         self.CR = CR
         self.Type = Type
+        self.Source = Source
 
     def __repr__(self):
         return f"<{self.Name}>"
@@ -31,19 +33,24 @@ def _get_form(data=None):
     form = FilterForm(data)
     form.cr.choices = [(r.CR,r.CR) for r in monstersModel.query.distinct('CR').order_by("CR")]
     form.Type.choices = [(r.Type,r.Type) for r in monstersModel.query.distinct('Type').order_by("Type")]
+    form.Source.choices = [(r.Source,r.Source) for r in monstersModel.query.distinct('Source').order_by("Source")]
     return form
     
 class FilterForm(FlaskForm):
     print("filterform")
     sort = SelectField('sort', 
         validators=[DataRequired()], 
-        choices=[('Name', 'Name'),('CR', 'CR'), ('Type', 'Type')]
+        choices=[('Name', 'Name'),('CR', 'CR'), ('Type', 'Type'),('Source', 'Source')]
     )
     cr = SelectMultipleField('cr',
         validators=[Optional()],
         choices=[]
     )
-    Type = SelectField('Type',
+    Type = SelectMultipleField('Type',
+        validators=[Optional()],
+        choices=[]
+    )
+    Source = SelectMultipleField('Source',
         validators=[Optional()],
         choices=[]
     )
@@ -62,8 +69,9 @@ def handle_monsters():
                 print (form.cr.data)
                 monsters = monsters.filter(monstersModel.CR.in_(form.cr.data))
             if form.Type.data:
-                print("form.Type")
-                monsters = monsters.filter_by(Type=form.Type.data)
+                monsters = monsters.filter(monstersModel.Type.in_(form.type.data))
+            if form.Source.data:
+                monsters = monsters.filter(monstersModel.Source.in_(form.Source.data))
             print ("successful form all good")
         else:
             print(form.errors)
@@ -73,7 +81,8 @@ def handle_monsters():
     results = [{
         "name": monster.Name,
         "cr": monster.CR,
-        "Type": monster.Type
+        "Type": monster.Type,
+        "Source": monster.Source
     } for monster in monsters]
 
     return render_template("monsters.html",monsters=results,form=form)
