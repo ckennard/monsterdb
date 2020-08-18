@@ -6,20 +6,32 @@
 		.monsterType{
 			text-transform: capitalize;
 		}
+		
+		.monsterList{
+			margin-left: auto;
+			margin-right: 0;
+			float:right;
+		}
+
+		.filters{
+			margin-left: 0;
+			margin-right: auto;
+			float:left;
+		}
 	</style>
 	<script type="text/javascript" src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
 </head>
 <body>
-	<form method="POST" action="/monsters">
+	<form method="POST" action="/monsters" class="filters" width = "25%">
 		{{ form.csrf_token }}
 		{{ form.sort.label }} {{ form.sort }}
 		{{ form.cr.label }} {{ form.cr }}
 		{{ form.Type.label }} {{ form.Type }}
 		{{ form.Source.label}} {{ form.Source }}
-		<input type="submit" name = "formaction" value="Sort">
+		<input type="submit" name = "formaction" value="Sort and Filter">
 	</form>
 
-	<table class="sortable" width="50%" cellpadding="3" cellspacing="3">
+	<table class="sortable monsterList" width="75%" cellpadding="3" cellspacing="3">
 		<tr>
 			<th><h3>Monster</h3></th>
 			<th><h3>CR</h3></th>
@@ -36,5 +48,5 @@
 				<td><a href='https://aonprd.com/MonsterDisplay.aspx?ItemName={{monster.name}}'>Link</a></td>
 			</tr>
 		{% endfor %}
-		</table>
+	</table>
 </body>
