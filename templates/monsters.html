@@ -8,45 +8,60 @@
 		}
 		
 		.monsterList{
-			margin-left: auto;
-			margin-right: 0;
 			float:right;
 		}
 
 		.filters{
-			margin-left: 0;
-			margin-right: auto;
 			float:left;
+		}
+
+		.flex-container {
+			display: flex;
+			flex-flow: row;
+			flex-shrink: 3;
+		}
+
+		.flex-form{
+			background: gray;
+			padding: 5px;
+			display: flex;
+			flex-direction: column;
+		}
+		.flex-item{
+			background: gray;
+			padding: 5px;
 		}
 	</style>
 	<script type="text/javascript" src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
 </head>
 <body>
-	<form method="POST" action="/monsters" class="filters" width = "25%">
-		{{ form.csrf_token }}
-		{{ form.sort.label }} {{ form.sort }}
-		{{ form.cr.label }} {{ form.cr }}
-		{{ form.Type.label }} {{ form.Type }}
-		{{ form.Source.label}} {{ form.Source }}
-		<input type="submit" name = "formaction" value="Sort and Filter">
-	</form>
-
-	<table class="sortable monsterList" width="75%" cellpadding="3" cellspacing="3">
-		<tr>
-			<th><h3>Monster</h3></th>
-			<th><h3>CR</h3></th>
-			<th><h3>Type</h3></th>
-			<th><h3>Source</h3></th>
-			<th><h3>Archive Link</h3></th>
-		</tr>
-		{% for monster in monsters %}
-			<tr>
-				<td>{{monster.name}}</td>
-				<td>{{monster.cr}}</td>
-				<td class="monsterType">{{monster.Type}}</td>
-				<td>{{monster.Source}}</td>
-				<td><a href='https://aonprd.com/MonsterDisplay.aspx?ItemName={{monster.name}}'>Link</a></td>
+	<div class="flex-container">
+		<form method="POST" action="/monsters" class="flex-form">
+			{{ form.csrf_token }} 
+			<div class=flex-item> {{ form.sort.label }} <br> {{ form.sort }} </div>
+			<div class=flex-item> {{ form.cr.label }} <br> {{ form.cr }} </div>
+			<div class=flex-item> {{ form.Type.label }} <br> {{ form.Type }} </div>
+			<div class=flex-item> {{ form.Source.label}} <br> {{ form.Source }} </div>
+			<input type="submit" name = "formaction" value="Sort and Filter">
+		</form>
+	
+		<table class="sortable flex-item" cellpadding="3" cellspacing="3">
+			<tr> 
+				<th><h3>Monster</h3></th>
+				<th><h3>CR</h3></th>
+				<th><h3>Type</h3></th>
+				<th><h3>Source</h3></th>
+				<th><h3>Archive Link</h3></th>
 			</tr>
-		{% endfor %}
-	</table>
+			{% for monster in monsters %}
+				<tr>
+					<td>{{monster.name}}</td>
+					<td>{{monster.cr}}</td>
+					<td class="monsterType">{{monster.Type}}</td>
+					<td>{{monster.Source}}</td>
+					<td><a href='https://aonprd.com/MonsterDisplay.aspx?ItemName={{monster.name}}'>Link</a></td>
+				</tr>
+			{% endfor %}
+		</table>
+	</div>
 </body>

@@ -38,11 +38,11 @@ def _get_form(data=None):
     
 class FilterForm(FlaskForm):
     print("filterform")
-    sort = SelectField('sort', 
+    sort = SelectField('Sort by...', 
         validators=[DataRequired()], 
         choices=[('Name', 'Name'),('CR', 'CR'), ('Type', 'Type'),('Source', 'Source')]
     )
-    cr = SelectMultipleField('cr',
+    cr = SelectMultipleField('CR',
         validators=[Optional()],
         choices=[]
     )
@@ -97,7 +97,6 @@ def handle_monsters():
     } for monster in monsters]
 
     return render_template("monsters.html",monsters=results,form=form)
-    
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
