@@ -32,7 +32,7 @@ class monstersModel(db.Model):
 def _get_form(data=None):
     form = FilterForm(data)
     form.cr.choices = [('All CRs', 'All CRs')]+[(r.CR,r.CR) for r in monstersModel.query.distinct('CR').order_by("CR")]
-    form.Type.choices = [('All Types', 'All Types')]+[(r.Type,r.Type) for r in monstersModel.query.distinct('Type').order_by("Type")]
+    form.Type.choices = [('All Types', 'All Types')]+[(r.Type,r.Type.capitalize()) for r in monstersModel.query.distinct('Type').order_by("Type")]
     form.Source.choices = [('All Sources', 'All Sources')]+[(r.Source,r.Source) for r in monstersModel.query.distinct('Source').order_by("Source")]
     return form
     

@@ -1,67 +1,65 @@
-<head>
-	<style>
-		tr:nth-child(even) {background: #CCC}
-		tr:nth-child(odd) {background: #FFF}
-	
-		.monsterType{
-			text-transform: capitalize;
-		}
+<!doctype html>
+<html lang="en">
+	<head>
+		<!-- Required meta tags -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
+		<style>
+			tr:nth-child(even) {background: #CCC}
+			tr:nth-child(odd) {background: #FFF}
 		
-		.monsterList{
-			float:right;
-		}
-
-		.filters{
-			float:left;
-		}
-
-		.flex-container {
-			display: flex;
-			flex-flow: row;
-			flex-shrink: 3;
-		}
-
-		.flex-form{
-			background: gray;
-			padding: 5px;
-			display: flex;
-			flex-direction: column;
-		}
-		.flex-item{
-			background: gray;
-			padding: 5px;
-		}
-	</style>
-	<script type="text/javascript" src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
-</head>
-<body>
-	<div class="flex-container">
-		<form method="POST" action="/monsters" class="flex-form">
-			{{ form.csrf_token }} 
-			<div class=flex-item> {{ form.sort.label }} <br> {{ form.sort }} </div>
-			<div class=flex-item> {{ form.cr.label }} <br> {{ form.cr }} </div>
-			<div class=flex-item> {{ form.Type.label }} <br> {{ form.Type }} </div>
-			<div class=flex-item> {{ form.Source.label}} <br> {{ form.Source }} </div>
-			<input type="submit" name = "formaction" value="Sort and Filter">
-		</form>
-	
-		<table class="sortable flex-item" cellpadding="3" cellspacing="3">
-			<tr> 
-				<th><h3>Monster</h3></th>
-				<th><h3>CR</h3></th>
-				<th><h3>Type</h3></th>
-				<th><h3>Source</h3></th>
-				<th><h3>Archive Link</h3></th>
-			</tr>
-			{% for monster in monsters %}
-				<tr>
-					<td>{{monster.name}}</td>
-					<td>{{monster.cr}}</td>
-					<td class="monsterType">{{monster.Type}}</td>
-					<td>{{monster.Source}}</td>
-					<td><a href='https://aonprd.com/MonsterDisplay.aspx?ItemName={{monster.name}}'>Link</a></td>
-				</tr>
-			{% endfor %}
-		</table>
-	</div>
-</body>
+			.monsterType{
+				text-transform: capitalize;
+			}
+		</style>
+		<title>1e MonsterDB</title>
+	</head>
+	<body>
+		<h1>1e MonsterDB</h1>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-2">
+					<form method="POST" action="/monsters" class="container">
+						{{ form.csrf_token }} 
+						<div class=form-row> {{ form.sort.label }} <br> {{ form.sort }} </div>
+						<div class=form-row> {{ form.cr(class_="custom-select") }} </div>
+						<div class=form-row> {{ form.Type(class_="custom-select") }} </div>
+						<div class=form-row> {{ form.Source(class_="custom-select") }} </div>
+						<input type="submit" name = "formaction" value="Sort and Filter">
+					</form>
+				</div>
+				<div class="col-10">
+					<table id="monsters" class="table">
+						<thead>
+							<tr> 
+								<th><h3>Monster</h3></th>
+								<th><h3>CR</h3></th>
+								<th><h3>Type</h3></th>
+								<th><h3>Source</h3></th>
+								<th><h3>Archive Link</h3></th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for monster in monsters %}
+							<tr>
+								<td>{{monster.name}}</td>
+								<td>{{monster.cr}}</td>
+								<td class="monsterType">{{monster.Type}}</td>
+								<td>{{monster.Source}}</td>
+								<td><a href='https://aonprd.com/MonsterDisplay.aspx?ItemName={{monster.name}}'>Link</a></td>
+							</tr>
+						{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+		<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
+		<script src="{{url_for('static', filename='datatables.js')}}"></script>
+	</body>
+</html>
