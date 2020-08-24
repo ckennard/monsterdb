@@ -6,53 +6,64 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
 		<style>
 			tr:nth-child(even) {background: #CCC}
 			tr:nth-child(odd) {background: #FFF}
 		
-			.monsterType{
+			.capitalize{
 				text-transform: capitalize;
 			}
 		</style>
 		<title>1e MonsterDB</title>
 	</head>
 	<body>
-		<h1>1e MonsterDB</h1>
+		<h1 class="Display-3 p-3 px-md-4 mb-3">1e MonsterDB <small class="text-muted h5">by Chris Kennard</small></h1>
 		<div class="container-fluid">
-			<div class="row">
-				<div class="col-2">
+			<div class="row card-deck">
+				<div class="col-2 card box-shadow">
 					<form method="POST" action="/monsters" class="container">
 						{{ form.csrf_token }} 
-						<div class=form-row> {{ form.sort.label }} <br> {{ form.sort }} </div>
-						<div class=form-row> {{ form.cr(class_="custom-select") }} </div>
-						<div class=form-row> {{ form.Type(class_="custom-select") }} </div>
-						<div class=form-row> {{ form.Source(class_="custom-select") }} </div>
-						<input type="submit" name = "formaction" value="Sort and Filter">
+						<div class="form-row mb-2 mt-2"> {{ form.cr(class_="selectpicker", data_live_search="true", title="Pick CR(s)...") }} </div>
+						<div class="form-row mb-2 mt-2"> {{ form.Type(class_="selectpicker", data_live_search="true", title="Pick Type(s)...") }} </div>
+						<div class="form-row mb-2 mt-2"> {{ form.Source(class_="selectpicker", data_live_search="true", title="Pick Source(s)...") }} </div>
+						<div class="form-row mb-2 mt-2"> {{ form.Alignment(class_="selectpicker", data_live_search="true", title="Pick Alignment(s)...") }} </div>
+						<div class="form-row mb-2 mt-2"> {{ form.Size(class_="selectpicker", data_live_search="true", title="Pick Size(s)...") }} </div>
+						<div class="form-row mb-2 mt-2"> {{ form.Environment(class_="selectpicker", data_live_search="true", title="Pick Environment(s)...", data_actions_box="true") }} </div>
+						<input type="submit" name = "formaction" value="Filter">
 					</form>
 				</div>
-				<div class="col-10">
-					<table id="monsters" class="table">
-						<thead>
-							<tr> 
-								<th><h3>Monster</h3></th>
-								<th><h3>CR</h3></th>
-								<th><h3>Type</h3></th>
-								<th><h3>Source</h3></th>
-								<th><h3>Archive Link</h3></th>
-							</tr>
-						</thead>
-						<tbody>
-							{% for monster in monsters %}
-							<tr>
-								<td>{{monster.name}}</td>
-								<td>{{monster.cr}}</td>
-								<td class="monsterType">{{monster.Type}}</td>
-								<td>{{monster.Source}}</td>
-								<td><a href='https://aonprd.com/MonsterDisplay.aspx?ItemName={{monster.name}}'>Link</a></td>
-							</tr>
-						{% endfor %}
-						</tbody>
-					</table>
+				<div class="col-10 card box-shadow">
+					<div class="mb-2 mt-2">
+						<table id="monsters" class="table">
+							<thead>
+								<tr> 
+									<th><h3>Monster</h3></th>
+									<th><h3>CR</h3></th>
+									<th><h3>Type</h3></th>
+									<th><h3>Source</h3></th>
+									<th><h3>Alignment</h3></th>
+									<th><h3>Size</h3></th>
+									<th><h3>Environment</h3>
+									<th><h3>Archive Link</h3></th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for monster in monsters %}
+								<tr>
+									<td>{{monster.name}}</td>
+									<td>{{monster.cr}}</td>
+									<td class="capitalize">{{monster.Type}}</td>
+									<td>{{monster.Source}}</td>
+									<td>{{monster.Alignment}}</td>
+									<td>{{monster.Size}}</td>
+									<td>{{monster.Environment}}</td>
+									<td><a href='https://aonprd.com/MonsterDisplay.aspx?ItemName={{monster.name}}'>Link</a></td>
+								</tr>
+							{% endfor %}
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -61,5 +72,6 @@
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 		<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
 		<script src="{{url_for('static', filename='datatables.js')}}"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
 	</body>
 </html>
