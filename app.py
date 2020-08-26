@@ -54,7 +54,7 @@ def _get_form(data=None):
     form.Type.choices = [('All Types', 'All Types')]+[(r.Type,r.Type.capitalize()) for r in monstersModel.query.distinct('Type').order_by("Type")]
     form.Source.choices = [('All Sources', 'All Sources')]+[(r.Source,r.Source) for r in monstersModel.query.distinct('Source').order_by("Source")]
     form.Alignment.choices = [('All Alignments', 'All Alignments')]+[(r.Alignment,r.Alignment) for r in monstersModel.query.distinct('Alignment').order_by("Alignment")]
-    form.Size.choices = [('All Sizes', 'All Sizes')]+[(r.Size,r.Size) for r in monstersModel.query.distinct('Size').order_by("Size")]
+    form.Size.choices = [('All Sizes', 'All Sizes'),('Fine','Fine'),('Diminutive','Diminutive'),('Tiny','Tiny'),('Small', 'Small'),('Medium','Medium'),('Large','Large'),('Huge','Huge'),('Gargantuan','Gargantuan'),('Colossal','Colossal')]
     form.Environment.choices = [('All Environments', 'All Environments')]+[(r.Environment,r.Environment) for r in monstersModel.query.distinct('Environment').order_by("Environment")]
     return form
     
