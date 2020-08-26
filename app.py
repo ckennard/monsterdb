@@ -5,10 +5,18 @@ from wtforms import SelectField, SelectMultipleField
 from wtforms.validators import DataRequired,Optional
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from sqlalchemy import distinct
+import json
+from fractions import Fraction
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:ThanksP0stgres!@localhost:5432/bestiary"
-app.config['SECRET_KEY'] = "tylerskelton"
+
+with open('/etc/config.json') as config_file:
+  config = json.load(config_file)
+
+app.config['SECRET_KEY'] = config.get('SECRET_KEY')
+app.config['SQLALCHEMY_DATABASE_URI'] = config.get('SQLALCHEMY_DATABASE_URI')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 db = SQLAlchemy(app)
 
 class monstersModel(db.Model):
@@ -16,7 +24,7 @@ class monstersModel(db.Model):
 
     id = db.Column(db.Integer, primary_key=True) 
     Name = db.Column(db.String())
-    CR = db.Column(db.Integer())
+    CR = db.Column(db.String())
     Type = db.Column(db.String())
     Source = db.Column(db.String())
     Alignment = db.Column(db.String())
@@ -32,12 +40,17 @@ class monstersModel(db.Model):
         self.Size = Size
         self.Environment = Environment
 
-    def __repr__(self):
-        return f"<{self.Name}>"
+    # def __repr__(self):
+    #     return f"<{self.Name}>"
 
 def _get_form(data=None):
     form = FilterForm(data)
-    form.cr.choices = [('All CRs', 'All CRs')]+[(r.CR,r.CR) for r in monstersModel.query.distinct('CR').order_by("CR")]
+    # form.cr.choices = [('All CRs', 'All CRs')]+[(r.CR,r.CR) for r in monstersModel.query.distinct('CR').order_by("CR")]
+    choices = [r.CR for r in monstersModel.query.distinct('CR').order_by("CR")]
+    stringlist = sorted([i for i in choices if "/" in i])
+    intlist = sorted([int(i) for i in choices if "/" not in i ])
+    choices = stringlist+intlist
+    form.cr.choices = [('All CRs', 'All CRs')]+[(str(r),str(r)) for r in choices]
     form.Type.choices = [('All Types', 'All Types')]+[(r.Type,r.Type.capitalize()) for r in monstersModel.query.distinct('Type').order_by("Type")]
     form.Source.choices = [('All Sources', 'All Sources')]+[(r.Source,r.Source) for r in monstersModel.query.distinct('Source').order_by("Source")]
     form.Alignment.choices = [('All Alignments', 'All Alignments')]+[(r.Alignment,r.Alignment) for r in monstersModel.query.distinct('Alignment').order_by("Alignment")]
@@ -46,7 +59,6 @@ def _get_form(data=None):
     return form
     
 class FilterForm(FlaskForm):
-    print("filterform")
     cr = SelectMultipleField('CR',
         validators=[Optional()],
         choices=[]
@@ -122,7 +134,6 @@ def handle_monsters():
             print(form.errors)
             print("bullshit form i hate it")
 
-    print("results")
     results = [{
         "name": monster.Name,
         "cr": monster.CR,
