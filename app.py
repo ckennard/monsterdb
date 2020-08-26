@@ -72,7 +72,7 @@ class FilterForm(FlaskForm):
         choices=[]
     )
 
-@app.route('/monsters', methods=['GET','POST'])
+@app.route('/', methods=['GET','POST'])
 def handle_monsters():
     monsters = monstersModel.query
     if request.method == 'GET':

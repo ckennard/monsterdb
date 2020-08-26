@@ -8,9 +8,6 @@
 		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
 		<style>
-			tr:nth-child(even) {background: #CCC}
-			tr:nth-child(odd) {background: #FFF}
-		
 			.capitalize{
 				text-transform: capitalize;
 			}
@@ -18,34 +15,36 @@
 		<title>1e MonsterDB</title>
 	</head>
 	<body>
-		<h1 class="Display-3 p-3 px-md-4 mb-3">1e MonsterDB <small class="text-muted h5">by Chris Kennard</small></h1>
+		<h1 class="Display-3 p-3 px-md-4 mb-3 ml-3">1e MonsterDB</h1>
 		<div class="container-fluid">
 			<div class="row card-deck">
 				<div class="col-2 card box-shadow">
 					<form method="POST" action="/monsters" class="container">
 						{{ form.csrf_token }} 
-						<div class="form-row mb-2 mt-2"> {{ form.cr(class_="selectpicker", data_live_search="true", title="Pick CR(s)...") }} </div>
-						<div class="form-row mb-2 mt-2"> {{ form.Type(class_="selectpicker", data_live_search="true", title="Pick Type(s)...") }} </div>
-						<div class="form-row mb-2 mt-2"> {{ form.Source(class_="selectpicker", data_live_search="true", title="Pick Source(s)...") }} </div>
-						<div class="form-row mb-2 mt-2"> {{ form.Alignment(class_="selectpicker", data_live_search="true", title="Pick Alignment(s)...") }} </div>
-						<div class="form-row mb-2 mt-2"> {{ form.Size(class_="selectpicker", data_live_search="true", title="Pick Size(s)...") }} </div>
-						<div class="form-row mb-2 mt-2"> {{ form.Environment(class_="selectpicker", data_live_search="true", title="Pick Environment(s)...", data_actions_box="true") }} </div>
-						<input type="submit" name = "formaction" value="Filter">
+						<div class="form-row mb-2 mt-2 "> {{ form.cr(class_="selectpicker", data_live_search="true", title="Pick CR(s)...", data_width="100%") }} </div>
+						<div class="form-row mb-2 mt-2"> {{ form.Type(class_="selectpicker", data_live_search="true", title="Pick Type(s)...", data_width="100%") }} </div>
+						<div class="form-row mb-2 mt-2"> {{ form.Source(class_="selectpicker", data_live_search="true", title="Pick Source(s)...", data_width="100%") }} </div>
+						<div class="form-row mb-2 mt-2"> {{ form.Alignment(class_="selectpicker", data_live_search="true", title="Pick Alignment(s)...", data_width="100%") }} </div>
+						<div class="form-row mb-2 mt-2"> {{ form.Size(class_="selectpicker", data_live_search="true", title="Pick Size(s)...", data_width="100%") }} </div>
+						<div class="form-row mb-2 mt-2"> {{ form.Environment(class_="selectpicker capitalize", data_live_search="true", title="Pick Environment(s)...", data_actions_box="true", data_width="100%") }} </div>
+						<div class="form-row mb-2 mt-2">
+							<input type="submit" name = "formaction" value="Filter" class="btn btn-primary btn-block">
+						</div>
 					</form>
 				</div>
 				<div class="col-10 card box-shadow">
 					<div class="mb-2 mt-2">
-						<table id="monsters" class="table">
+						<table id="monsters" class="table stripe hover order-column nowrap">
 							<thead>
 								<tr> 
-									<th><h3>Monster</h3></th>
-									<th><h3>CR</h3></th>
-									<th><h3>Type</h3></th>
-									<th><h3>Source</h3></th>
-									<th><h3>Alignment</h3></th>
-									<th><h3>Size</h3></th>
-									<th><h3>Environment</h3>
-									<th><h3>Archive Link</h3></th>
+									<th><h4>Monster</h4></th>
+									<th><h4>CR</h4></th>
+									<th><h4>Type</h4></th>
+									<th><h4>Source</h4></th>
+									<th><h4>Alignment</h4></th>
+									<th><h4>Size</h4></th>
+									<th><h4>Environment</h4>
+									<th><h4>Archive Link</h4></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -57,7 +56,7 @@
 									<td>{{monster.Source}}</td>
 									<td>{{monster.Alignment}}</td>
 									<td>{{monster.Size}}</td>
-									<td>{{monster.Environment}}</td>
+									<td class="capitalize">{{monster.Environment}}</td>
 									<td><a href='https://aonprd.com/MonsterDisplay.aspx?ItemName={{monster.name}}'>Link</a></td>
 								</tr>
 							{% endfor %}
