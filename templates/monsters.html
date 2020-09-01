@@ -1,6 +1,23 @@
 <!doctype html>
 <html lang="en">
 	<head>
+		<link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}">
+		<link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon-32x32.png') }}">
+		<link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon-16x16.png') }}">
+		<link rel="manifest" href="{{ url_for('static', filename='site.webmanifest') }}">
+		<meta name="msapplication-TileColor" content="#da532c">
+		<meta name="theme-color" content="#ffffff">
+
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-176421136-1"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+
+			gtag('config', 'UA-176421136-1');
+		</script>
+
 		<!-- Required meta tags -->
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -12,14 +29,14 @@
 				text-transform: capitalize;
 			}
 		</style>
-		<title>1e MonsterDB</title>
+		<title>Pathfinder MonsterDB</title>
 	</head>
 	<body>
-		<h1 class="Display-3 p-3 px-md-4 mb-3 ml-3">1e MonsterDB</h1>
-		<div class="container-fluid">
+		<h2 class="Display-3 p-3 px-md-4 mb-3 ml-3">MonsterDB - Pathfinder</h2>
+		<div class="container-fluid width=100%">
 			<div class="row card-deck">
-				<div class="col-2 card box-shadow">
-					<form method="POST" action="/monsters" class="container">
+				<div class="col-xl-2 col-md-2 col-lg-2 card box-shadow">
+					<form method="POST" action="/" class="container">
 						{{ form.csrf_token }} 
 						<div class="form-row mb-2 mt-2 "> {{ form.cr(class_="selectpicker", data_live_search="true", title="Pick CR(s)...", data_width="100%") }} </div>
 						<div class="form-row mb-2 mt-2"> {{ form.Type(class_="selectpicker", data_live_search="true", title="Pick Type(s)...", data_width="100%") }} </div>
@@ -32,9 +49,9 @@
 						</div>
 					</form>
 				</div>
-				<div class="col-10 card box-shadow">
+				<div class="col-xl-10 col-md-10 col-lg-10 card box-shadow">
 					<div class="mb-2 mt-2">
-						<table id="monsters" class="table stripe hover order-column nowrap">
+						<table id="monsters" class="table stripe hover order-column nowrap display">
 							<thead>
 								<tr> 
 									<th><h4>Monster</h4></th>
