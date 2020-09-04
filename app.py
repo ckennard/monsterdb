@@ -29,9 +29,11 @@ class monstersModel(db.Model):
     Source = db.Column(db.String())
     Alignment = db.Column(db.String())
     Size = db.Column(db.String())
-    Environment = db.Column(db.String()) 
+    Environment = db.Column(db.String())
+    Party = db.Column(db.String())
+    Link = db.Column(db.String())
 
-    def __init__(self, Name, CR, Type, Source, Alignment, Size, Environment):
+    def __init__(self, Name, CR, Type, Source, Alignment, Size, Environment, Party, Link):
         self.Name = Name
         self.CR = CR
         self.Type = Type
@@ -39,6 +41,8 @@ class monstersModel(db.Model):
         self.Alignment = Alignment
         self.Size = Size
         self.Environment = Environment
+        self.Party = Party
+        self.Link = Link
 
     # def __repr__(self):
     #     return f"<{self.Name}>"
@@ -52,7 +56,7 @@ def _get_form(data=None):
     choices = stringlist+intlist
     form.cr.choices = [('All CRs', 'All CRs')]+[(str(r),str(r)) for r in choices]
     form.Type.choices = [('All Types', 'All Types')]+[(r.Type,r.Type.capitalize()) for r in monstersModel.query.distinct('Type').order_by("Type")]
-    form.Source.choices = [('All Sources', 'All Sources')]+[(r.Source,r.Source) for r in monstersModel.query.distinct('Source').order_by("Source")]
+    form.Source.choices = [('All Sources', 'All Sources'), ('1pp', '1pp'), ('3pp', '3pp')]+[(r.Source,r.Source) for r in monstersModel.query.distinct('Source').order_by("Source")]
     form.Alignment.choices = [('All Alignments', 'All Alignments')]+[(r.Alignment,r.Alignment) for r in monstersModel.query.distinct('Alignment').order_by("Alignment")]
     form.Size.choices = [('All Sizes', 'All Sizes'),('Fine','Fine'),('Diminutive','Diminutive'),('Tiny','Tiny'),('Small', 'Small'),('Medium','Medium'),('Large','Large'),('Huge','Huge'),('Gargantuan','Gargantuan'),('Colossal','Colossal')]
     form.Environment.choices = [('All Environments', 'All Environments')]+[(r.Environment,r.Environment) for r in monstersModel.query.distinct('Environment').order_by("Environment")]
@@ -107,12 +111,19 @@ def handle_monsters():
                     print("All Types selected")
             if form.Source.data:
                 if not 'All Sources' in form.Source.data: 
-                    print ("Source filter detected")
-                    monsters = monsters.filter(monstersModel.Source.in_(form.Source.data))
+                    if not '1pp' in form.Source.data and not '3pp' in form.Source.data:
+                        print ("Source filter detected")
+                        monsters = monsters.filter(monstersModel.Source.in_(form.Source.data))
+                    elif '1pp' in form.Source.data:
+                        print ("1pp Source filter detected")
+                        monsters = monsters.filter(monstersModel.Party.in_(form.Source.data))
+                    elif '3pp' in form.Source.data:
+                        print ("3pp Source filter detected")
+                        monsters = monsters.filter(monstersModel.Party.in_(form.Source.data))
                 else:
                     print("All Sources selected")
             if form.Alignment.data:
-                if not 'All Alignments' in form.Alignment.data: 
+                if not 'All Alignments' in form.Alignment.data:
                     print ("Alignment filter detected")
                     monsters = monsters.filter(monstersModel.Alignment.in_(form.Alignment.data))
                 else:
@@ -141,7 +152,8 @@ def handle_monsters():
         "Source": monster.Source,
         "Alignment": monster.Alignment,
         "Size": monster.Size,
-        "Environment": monster.Environment
+        "Environment": monster.Environment,
+        "Link": monster.Link
     } for monster in monsters]
 
     return render_template("monsters.html",monsters=results,form=form)
