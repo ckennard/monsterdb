@@ -44,8 +44,6 @@ class monstersModel(db.Model):
         self.Party = Party
         self.Link = Link
 
-    # def __repr__(self):
-    #     return f"<{self.Name}>"
 
 def _get_form(data=None):
     form = FilterForm(data)
@@ -89,12 +87,6 @@ class FilterForm(FlaskForm):
     )
 
 @app.route('/', methods=['GET','POST'])
-def default_page():
-    if request.method == 'GET':
-        form = _get_form()
-    return render_template("main.html",form=form)
-
-@app.route('/search', methods=['GET','POST'])
 def handle_monsters():
     monsters = monstersModel.query
     if request.method == 'GET':
