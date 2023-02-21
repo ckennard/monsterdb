@@ -7,8 +7,10 @@ from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from sqlalchemy import distinct
 import json
 from fractions import Fraction
+from flask_caching import Cache
 
 app = Flask(__name__)
+cache = Cache(app, config={'CACHE_TYPE': 'SimpleCache'})
 
 with open('/etc/config.json') as config_file:
   config = json.load(config_file)
@@ -87,6 +89,7 @@ class FilterForm(FlaskForm):
     )
 
 @app.route('/', methods=['GET','POST'])
+@cache.cached(timeout=10000)
 def handle_monsters():
     monsters = monstersModel.query
     if request.method == 'GET':
